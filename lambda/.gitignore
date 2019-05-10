@@ -1,0 +1,7 @@
+ignore
+.gradle
+.idea
+out/
+gradle/
+gradlew.bat
+.DS_Store
