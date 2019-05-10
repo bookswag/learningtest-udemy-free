@@ -2,11 +2,7 @@ package com.bookswag.funcp.ch1;
 
 public class App2 {
     public static void main(String[] args) {
-        System.out.println(process("Hello, World!", new Processor() {
-            public String process(String str) {
-                return str.toUpperCase();
-            }
-        }));
+        System.out.println(process("Hello, World!", str -> str.toUpperCase()));
     }
 
     private static String process(String hello, Processor processor) {
@@ -14,6 +10,7 @@ public class App2 {
     }
 }
 
+@FunctionalInterface
 interface Processor {
     String process(String str);
 }
