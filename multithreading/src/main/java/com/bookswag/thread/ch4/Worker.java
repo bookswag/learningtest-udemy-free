@@ -11,7 +11,7 @@ public class Worker {
     private List<Integer> list1 = new ArrayList<Integer>();
     private List<Integer> list2 = new ArrayList<Integer>();
 
-    public void stageOne() {
+    public synchronized void stageOne() {
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {
@@ -21,7 +21,7 @@ public class Worker {
         list1.add(random.nextInt(100));
     }
 
-    public void stageTwo() {
+    public synchronized void stageTwo() {
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {
