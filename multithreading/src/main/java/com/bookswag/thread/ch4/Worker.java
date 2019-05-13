@@ -42,7 +42,7 @@ public class Worker {
         System.out.println("Starting ....");
 
         long start = System.currentTimeMillis();
-        proccess();
+        new Thread(() -> proccess()).start();
         long end = System.currentTimeMillis();
 
         System.out.println("Time take : " + (end - start));
