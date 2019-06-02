@@ -30,8 +30,8 @@ public class Runner {
         Random random = new Random();
 
         for (int i=0; i<10_000 ; i++){
+            lock2.lock(); // OCCUR DEADLOCK !!
             lock1.lock();
-            lock2.lock();
             try {
                 Account.transfer(acc2, acc1, random.nextInt(100));
             } finally {
