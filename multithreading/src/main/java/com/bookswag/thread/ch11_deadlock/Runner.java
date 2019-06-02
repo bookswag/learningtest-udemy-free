@@ -11,12 +11,39 @@ public class Runner {
     private Lock lock1 = new ReentrantLock();
     private Lock lock2 = new ReentrantLock();
 
+    private void acquireLocks(Lock paramLock1, Lock paramLock2) throws InterruptedException { // DON'T CARE ORDER ABOUT LOCK
+        while(true) {
+            // Acquire locks
+            boolean gotFirstLock = false;
+            boolean gotSecondLock = false;
+
+            try {
+                gotFirstLock = paramLock1.tryLock();
+                gotSecondLock = paramLock2.tryLock();
+            } finally {
+                if (gotFirstLock && gotSecondLock) {
+                    return;
+                }
+
+                if (gotFirstLock) {
+                    paramLock1.unlock();
+                }
+
+                if (gotSecondLock) {
+                    paramLock2.unlock();
+                }
+            }
+
+            // Lock
+            Thread.sleep(1);
+        }
+    }
+
     public void firstThread() throws InterruptedException {
         Random random = new Random();
 
         for (int i=0; i<10_000 ; i++){
-            lock1.lock();
-            lock2.lock();
+            acquireLocks(lock1, lock2);
             try {
                 Account.transfer(acc1, acc2, random.nextInt(100));
             } finally {
@@ -30,8 +57,7 @@ public class Runner {
         Random random = new Random();
 
         for (int i=0; i<10_000 ; i++){
-            lock2.lock(); // OCCUR DEADLOCK !!
-            lock1.lock();
+            acquireLocks(lock2, lock1);
             try {
                 Account.transfer(acc2, acc1, random.nextInt(100));
             } finally {
