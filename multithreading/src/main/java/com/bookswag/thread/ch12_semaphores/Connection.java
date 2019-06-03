@@ -20,6 +20,15 @@ public class Connection {
             e.printStackTrace();
         }
 
+        try {
+            doConnect();
+        }
+        finally {
+            semaphore.release();
+        }
+    }
+
+    public void doConnect() {
         synchronized (this) {
             connections++;
             System.out.println("Current connections: " + connections);
@@ -34,6 +43,5 @@ public class Connection {
         synchronized (this) {
             connections--;
         }
-        semaphore.release();
     }
 }
