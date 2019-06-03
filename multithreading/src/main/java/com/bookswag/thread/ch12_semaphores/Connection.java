@@ -1,8 +1,11 @@
 package com.bookswag.thread.ch12_semaphores;
 
+import java.util.concurrent.Semaphore;
+
 public class Connection {
     private static Connection instance = new Connection();
     private int connections = 0;
+    private Semaphore semaphore = new Semaphore(10);
 
     private Connection() {}
 
@@ -11,6 +14,12 @@ public class Connection {
     }
 
     public void connect() {
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         synchronized (this) {
             connections++;
             System.out.println("Current connections: " + connections);
@@ -25,5 +34,6 @@ public class Connection {
         synchronized (this) {
             connections--;
         }
+        semaphore.release();
     }
 }
